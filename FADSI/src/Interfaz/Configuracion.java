@@ -61,6 +61,11 @@ public class Configuracion extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mensajeria-express.png"))); // NOI18N
 
         ACEPTAR.setText("ACEPTAR");
+        ACEPTAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ACEPTARActionPerformed(evt);
+            }
+        });
 
         CANCELAR.setText("CANCELAR");
         CANCELAR.addActionListener(new java.awt.event.ActionListener() {
@@ -139,6 +144,13 @@ public class Configuracion extends javax.swing.JFrame {
         leer.Mapa(file);
         
     }//GEN-LAST:event_Cargar_MapaActionPerformed
+
+    private void ACEPTARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ACEPTARActionPerformed
+        // TODO add your handling code here:
+        Principal Admi = new Principal();
+        Admi.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_ACEPTARActionPerformed
 
     /**
      * @param args the command line arguments

@@ -11,33 +11,70 @@ package Implementaciones;
  */
 public class Cola<T> {
 
+    public Nodo front;
+    public Nodo rear;
     public int size;
-    public Nodo<T> primero;
 
     public Cola() {
-        this.primero = new Nodo();
-        this.size=0;
-
+        front = null;
+        rear = front;
+        size = 0;
     }
-    public void Queue(Nodo elemento){
-        if(primero==null){
-            this.primero=elemento;
-            this.size++;
-        }
-        else{
-            primero.setNext(elemento);
+    
+    public void Devolverse(Nodo Mamon){
+        Mamon.setNext(front);
+        front=Mamon;
+        size++;
+    }
+
+    public void enqueue(T element) {
+        if (size == 0) {
+            Nodo newN = new Nodo(element);
+            front = newN;
+            rear = front;
+            size++;
+        } else {
+            Nodo newN = new Nodo(element);
+            rear.setNext(newN);
+            rear = rear.getNext();
             size++;
         }
     }
-    public Nodo Dequeue(){
-        Nodo temp = this.primero;
-        this.primero=this.primero.getNext();
-        size--;
-        return temp;
+
+    public T dequeue() {
+        if (size == 0) {
+            return null;
+        } else {
+            Nodo temp = front;
+            front = front.getNext();
+            size--;
+            return (T) temp.getElemento();
+        }
     }
-    public void Clear(){
-        this.primero=null;
-        this.size=0;
+
+    public T first() {
+        if (size == 0) {
+            return null;
+        } else {
+            return (T) front.getElemento();
+        }
     }
-    
+
+    public int size() {
+        return size;
+    }
+
+    public void clear() {
+        front = new Nodo();
+        rear = front;
+        size = 0;
+    }
+
+    public boolean isEmpty() {
+        if (size == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

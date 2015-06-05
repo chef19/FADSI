@@ -9,30 +9,33 @@ package Implementaciones;
  *
  * @author ANDRES MS
  */
-public class Nodo <T> {
-    public T Nodo;
-    public Nodo Next;
+public class Nodo<T> {
+    public T element;
+    public Nodo next;
     
     public Nodo(){
-        this.Next=null;
-        this.Nodo=null;
+        this.element=null;
+        this.next=null;
     }
-    
-    public Nodo(T nodo){
-        this.Nodo=nodo;
+    public Nodo(T element){
+        this.element=element;
+        this.next=null;
     }
-    public Nodo(T nodo,Nodo next){
-        this.Next=next;
-        this.Nodo=nodo;
-    }
-    public T getNodo(){
-        return this.Nodo;
+    public Nodo(T element,Nodo next){
+        this.element=element;
+        this.next=next;
     }
     public Nodo getNext(){
-        return this.Next;
+        return next;
+    }
+    public T getElemento(){
+        return element;
+    }
+    public void setElemento(T element){
+        this.element=element;
     }
     public void setNext(Nodo next){
-        this.Next=next;
+        this.next=next;
     }
 }
 

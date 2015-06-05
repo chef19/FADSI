@@ -5,6 +5,9 @@
  */
 package Interfaz;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 /**
  *
  * @author ANDRES MS
@@ -16,6 +19,16 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        
+        Toolkit t = Toolkit.getDefaultToolkit();
+
+        Dimension d = t.getScreenSize();
+
+        int ScreenWidth = d.width;
+
+        int ScreenHeight = d.height;
+
+        this.setSize(ScreenWidth, ScreenHeight);
     }
 
     /**
