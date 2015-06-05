@@ -5,6 +5,7 @@
  */
 package Interfaz;
 
+import Implementaciones.TXT;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -125,9 +126,7 @@ public class Configuracion extends javax.swing.JFrame {
 
     private void Cargar_MapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cargar_MapaActionPerformed
         // TODO add your handling code here:
-        File archivo = null;
-        FileReader fr = null;
-        BufferedReader br = null;
+        TXT leer = new TXT();
         String file = null;
 
         JFileChooser dig = new JFileChooser();  //Crea un objeto de dialogo JFileChooser
@@ -135,35 +134,10 @@ public class Configuracion extends javax.swing.JFrame {
         int option = dig.showOpenDialog(this);  // Abre la ventana en dialogo
         if (option == JFileChooser.APPROVE_OPTION) {
             file = dig.getSelectedFile().getPath();
-            System.out.println(file);
         }
-
-        try {
-         // Apertura del fichero y creacion de BufferedReader para poder
-            // hacer una lectura comoda (disponer del metodo readLine()).
-            archivo = new File(file);
-            fr = new FileReader(archivo);
-            br = new BufferedReader(fr);
-
-            // Lectura del fichero
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                System.out.println(linea+" jaja");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-         // En el finally cerramos el fichero, para asegurarnos
-            // que se cierra tanto si todo va bien como si salta 
-            // una excepcion.
-            try {
-                if (null != fr) {
-                    fr.close();
-                }
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
-        }
+        //leer.Puntos(file);
+        leer.Mapa(file);
+        
     }//GEN-LAST:event_Cargar_MapaActionPerformed
 
     /**
