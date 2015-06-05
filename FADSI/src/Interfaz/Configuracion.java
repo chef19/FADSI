@@ -5,6 +5,12 @@
  */
 package Interfaz;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author ANDRES MS
@@ -39,6 +45,11 @@ public class Configuracion extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Cargar_Mapa.setText("CARGAR");
+        Cargar_Mapa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Cargar_MapaActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Snap ITC", 0, 36)); // NOI18N
         jLabel1.setText("CONFIGURACION INICIAL");
@@ -112,6 +123,49 @@ public class Configuracion extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_CANCELARActionPerformed
 
+    private void Cargar_MapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cargar_MapaActionPerformed
+        // TODO add your handling code here:
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        String file = null;
+
+        JFileChooser dig = new JFileChooser();  //Crea un objeto de dialogo JFileChooser
+        dig.setFileFilter(filter);
+        int option = dig.showOpenDialog(this);  // Abre la ventana en dialogo
+        if (option == JFileChooser.APPROVE_OPTION) {
+            file = dig.getSelectedFile().getPath();
+            System.out.println(file);
+        }
+
+        try {
+         // Apertura del fichero y creacion de BufferedReader para poder
+            // hacer una lectura comoda (disponer del metodo readLine()).
+            archivo = new File(file);
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+
+            // Lectura del fichero
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                System.out.println(linea+" jaja");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+         // En el finally cerramos el fichero, para asegurarnos
+            // que se cierra tanto si todo va bien como si salta 
+            // una excepcion.
+            try {
+                if (null != fr) {
+                    fr.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_Cargar_MapaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -147,6 +201,7 @@ public class Configuracion extends javax.swing.JFrame {
         });
     }
 
+    private static final FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos TXT", "txt");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ACEPTAR;
     private javax.swing.JButton CANCELAR;
