@@ -11,6 +11,7 @@ import Implementaciones.EnviarCorreo;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -47,8 +48,9 @@ public class Pprincipal extends javax.swing.JFrame {
         HiloCorreo = new Timer(10, accionesC);
 
         graphComponent = new mxGraphComponent(graph);
-        graphComponent.setPreferredSize(new Dimension(300, 380));
+        graphComponent.setPreferredSize(new Dimension(580, 200));
         Panel.add("GRAFO", graphComponent);
+        Panel.setLayout(new FlowLayout(FlowLayout.CENTER));
     }
     private ActionListener accionesC = new ActionListener() {
 
@@ -294,6 +296,7 @@ public class Pprincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         AdicionarGrafo add = new AdicionarGrafo(texto.getText());
         texto.setText("");
+        
     }//GEN-LAST:event_DibujarActionPerformed
 
     /**
