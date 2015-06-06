@@ -11,14 +11,15 @@ package Implementaciones;
  */
 public class Pedidos {
     public int tiempo;
+    public String nombre;
     public String recoje;
     public String entrega;
     
     public Pedidos(){ 
     }
     
-    public Pedidos(int Tiempo,String Recoje,String Entrega){
-        this.tiempo=Tiempo;
+    public Pedidos(String nombre,String Recoje,String Entrega){
+        this.nombre=nombre;
         this.recoje=recoje;
         this.entrega=Entrega;
     }
@@ -30,5 +31,11 @@ public class Pedidos {
     }
     public String getEntrega(){
         return this.entrega;
+    }
+    public void setTiempo(int tiempo){
+        this.tiempo=tiempo;
+    }
+    public int getTiempo(int tiempo){
+        return this.tiempo;
     }
 }

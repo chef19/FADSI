@@ -100,10 +100,10 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="Panel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="Cantidad_Repartidores" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="texto" alignment="0" min="-2" pref="39" max="-2" attributes="0"/>
+                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
