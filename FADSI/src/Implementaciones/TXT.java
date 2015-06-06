@@ -8,12 +8,18 @@ package Implementaciones;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  *
  * @author MICHAEL
  */
 public class TXT {
+
+    public static LinkedList PUNTOS = new LinkedList();
+    public static LinkedList MAPA = new LinkedList();
+
+    public ArrayList<LinkedList> INFO = new ArrayList<LinkedList>();
 
     public void Puntos(String file) {
 
@@ -33,31 +39,14 @@ public class TXT {
 
             while ((linea = br.readLine()) != null) {
                 String codigo = "";
-                String provincia = "";
                 String direccion = "";
                 String espacio = " ";
                 boolean flag1 = true;
                 boolean flag2 = true;
-                boolean flag3 = true;
                 char[] informacion = linea.toCharArray();
 
                 int i = 0;
                 while (i < informacion.length) {
-                    //***********************************************************DIRECCION
-                    if (flag3 == false) {
-                        char elemento = informacion[i];
-
-                        if (linea.equals("PUNTOS")) {
-                            break;
-                        }
-
-                        direccion += String.valueOf(elemento);
-
-                        if (linea.equals("MAPA")) {
-                            return;
-                        }
-                        i++;
-                    }
                     //***********************************************************CODIGO
                     if (flag1) {
                         char elemento = informacion[i];
@@ -78,17 +67,11 @@ public class TXT {
 
                         i++;
                     }
-                    //***********************************************************PROVINCIA
+                    //***********************************************************DIRECCION
                     if (flag2 == false) {
                         char elemento = informacion[i];
 
-                        if (String.valueOf(elemento).equals(espacio)) {
-                            flag3 = false;
-                            flag2 = true;
-
-                        }
-
-                        provincia += String.valueOf(elemento);
+                        direccion += String.valueOf(elemento);
 
                         if (linea.equals("MAPA")) {
                             return;
@@ -97,9 +80,10 @@ public class TXT {
                     }
 
                 }
-                System.out.println(codigo);
-                System.out.println(provincia);
-                System.out.println(direccion);
+
+                Direcciones punto = new Direcciones(codigo, direccion);
+                PUNTOS.append(punto);
+
             }
 
             //****SIN IMPORTANCIA
@@ -112,6 +96,7 @@ public class TXT {
             try {
                 if (null != fr) {
                     fr.close();
+                    System.out.println("DONE!!  :"+ PUNTOS.size());
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();
@@ -144,6 +129,7 @@ public class TXT {
                     String principal = "";
                     String enlaces = "";
                     String espacio = " ";
+
                     boolean flag1 = true;
                     boolean flag2 = true;
                     char[] informacion = linea.toCharArray();
@@ -177,8 +163,12 @@ public class TXT {
                         }
 
                     }
-                    System.out.println(principal);
-                    System.out.println(enlaces);
+                    EnlazePeso(enlaces);
+
+                    Enlaces Map = new Enlaces(principal, INFO.get(0), INFO.get(1));
+                    MAPA.append(Map);
+                    INFO.clear();
+
                 }
             }
 
@@ -192,11 +182,61 @@ public class TXT {
             try {
                 if (null != fr) {
                     fr.close();
+                    System.out.println("DONE!!");
+                    System.out.println(MAPA.size());
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
         }
     }
+
+    public ArrayList EnlazePeso(String linea) {
+        LinkedList ENLACES = new LinkedList();
+        LinkedList PESOS = new LinkedList();
+
+        char[] arreglo = linea.toCharArray();
+
+        int i = 0;
+        String enlace = "";
+        String peso = "";
+        char espacio = ' ';
+        char abre = '(';
+        char cierra = ')';
+        boolean flag = true;
+        boolean flag1 = true;
+        while (i < arreglo.length) {
+
+            if (flag) {
+                if ((arreglo[i] != espacio) && (arreglo[i] != abre)) {
+                    enlace += arreglo[i];
+                }
+                if (arreglo[i] == abre) {
+                    flag = false;
+                    flag1 = false;
+                    ENLACES.append(enlace);
+                    enlace = "";
+                }
+
+            }
+            if (flag1 == false) {
+                if ((arreglo[i] != cierra) && (arreglo[i] != abre)) {
+                    peso += arreglo[i];
+                }
+                if (arreglo[i] == cierra) {
+                    flag = true;
+                    flag1 = true;
+                    PESOS.append(peso);
+                    peso = "";
+                }
+
+            }
+            i++;
+        }
+        INFO.add(ENLACES);
+        INFO.add(PESOS);
+        return INFO;
+    }
+    //public 
 
 }

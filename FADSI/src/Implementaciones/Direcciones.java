@@ -9,22 +9,17 @@ package Implementaciones;
  *
  * @author ANDRES MS
  */
-public class Dirreciones {
-    public int codigo;
-    public String provincia;
+public class Direcciones {
+    public String codigo;
     public String dirreccion;
     
-    public Dirreciones(int Codigo,String Provincia,String Direccion){
+    public Direcciones(String Codigo,String Direccion){
         this.codigo=Codigo;
-        this.provincia=Provincia;
         this.dirreccion=Direccion;
     }
-    public int getCodigo(){
+    public String getCodigo(){
         return this.codigo;
     }        
-    public String getProvincia(){
-        return this.provincia;
-    }
     public String getDireccion(){
         return this.dirreccion;
     }

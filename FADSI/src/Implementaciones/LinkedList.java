@@ -9,7 +9,8 @@ package Implementaciones;
  *
  * @author ANDRES MS
  */
-public class LinkedList <T> {
+public class LinkedList<T> {
+
     public Nodo head;
     public Nodo current;
     public Nodo tail;
@@ -35,24 +36,23 @@ public class LinkedList <T> {
     }
 
     public void append(T element) {
-        if(size==0){
+        if (size == 0) {
             Nodo newNode = new Nodo(element);
-            this.head=newNode;
-            this.current=this.head;
-            this.tail=this.current;
+            this.head = newNode;
+            this.current = this.head;
+            this.tail = this.current;
             this.size++;
-        }
-        else{
+        } else {
             Nodo newNode = new Nodo(element);
             this.tail.setNext(newNode);
-            this.tail=newNode;
+            this.tail = newNode;
             size++;
-        
+
         }
     }
 
     public void remove() {
-        if ((this.head == this.current) && (this.head == this.tail)){
+        if ((this.head == this.current) && (this.head == this.tail)) {
             System.out.println("Lista vacía, no se puede remover ningún elemento");
             return;
         }
@@ -64,10 +64,9 @@ public class LinkedList <T> {
         if (this.current == this.tail) {
             this.current = this.tail = temp;
             this.position--;
-        }
-
-        else
+        } else {
             this.current = this.current.getNext();
+        }
         this.size--;
     }
 
@@ -81,38 +80,35 @@ public class LinkedList <T> {
         return this.position;
     }
 
-    public void goToStart(){
+    public void goToStart() {
         this.current = this.head;
         this.position = -1;
     }
 
-    public void goToEnd(){
+    public void goToEnd() {
         this.current = this.tail;
         this.position = this.size - 1;
     }
 
-    public void goToPos(int pos) throws IndexOutOfBoundsException{
+    public void goToPos(int pos) throws IndexOutOfBoundsException {
         if (pos < -1 || pos >= this.size) {
             throw new IndexOutOfBoundsException("Fuera de indice");
-        }   
-        else if (pos > this.position) {
+        } else if (pos > this.position) {
             while (pos > this.position) {
                 this.next();
             }
-        } 
-        else if (pos < this.position) {
+        } else if (pos < this.position) {
             while (pos < this.position) {
                 this.previous();
             }
         }
     }
 
-
     public int getPositionOfElement(T element) {
         Nodo tempNode = this.head;
         int position = -1;
         while (tempNode != null) {
-            if (tempNode.getElemento() != null && tempNode.getElemento().equals(element)){
+            if (tempNode.getElemento() != null && tempNode.getElemento().equals(element)) {
                 return position;
             }
             tempNode = tempNode.getNext();
@@ -126,8 +122,8 @@ public class LinkedList <T> {
     }
 
     public boolean isEmpty() {
-        if (size == 0){
-            return true;
+        if (size == 0) {
+        return true;
         }
         return false;
     }
@@ -138,7 +134,7 @@ public class LinkedList <T> {
             return false;
         }
         this.current = this.current.getNext();
-        this.position++;    
+        this.position++;
         return true;
     }
 
@@ -158,7 +154,7 @@ public class LinkedList <T> {
     }
 
     public T getElement() {
-        return (T) current.getElemento();    
+        return (T) current.getElemento();
     }
-    
+
 }
