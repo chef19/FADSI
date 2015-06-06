@@ -17,7 +17,7 @@ public class prueba {
         //hola.Correo();
         //hola.run();
         
-        hola.EnviaEmail("ricardodh123@gmail.com");
+        hola.Correo();//EnviaEmail("ricardodh123@gmail.com");
         
         
     }
