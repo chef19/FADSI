@@ -6,7 +6,10 @@
 package Interfaz;
 
 import Dibujos.AdicionarGrafo;
+import Implementaciones.Cola;
 import Implementaciones.EnviarCorreo;
+import Implementaciones.Pedidos;
+import Implementaciones.LinkedList;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
@@ -14,28 +17,33 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.Timer;
 
 /**
  *
  * @author MICHAEL
  */
-public class Pprincipal extends javax.swing.JFrame {
-    LinkedList EntraPedididos = new LinkedList();
+public class Pprincipal extends JFrame {
+
+    public static ArrayList EntraPedidos = new ArrayList();
+    public static Cola ColaPedidos = new Cola();
     protected static mxGraph graph = new mxGraph();
     private mxGraphComponent graphComponent;
     public int tiempo;
-    
+    public DefaultListModel modelo;
 
     public static mxGraph getGraph() {
         return graph;
     }
 
     public Timer t;
-    public Timer HiloCorreo;
+
     public int s, cs, sF;
-    public int D, Ds, DF;
 
     /**
      * Creates new form Pprincipal
@@ -43,37 +51,62 @@ public class Pprincipal extends javax.swing.JFrame {
     public Pprincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+        modelo = new DefaultListModel();
+        ListaPedidos.setModel(modelo);
         t = new Timer(10, acciones);
-        HiloCorreo = new Timer(10, accionesC);
 
         graphComponent = new mxGraphComponent(graph);
         graphComponent.setPreferredSize(new Dimension(580, 200));
         Panel.add("GRAFO", graphComponent);
         Panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
     }
-    private ActionListener accionesC = new ActionListener() {
+
+    public class Hilo implements Runnable {
 
         @Override
-        public void actionPerformed(ActionEvent ae) {
-            Ds++;
-            if (Ds == 100) {
-                Ds = 0;
-                D++;
-                DF--;
-            }
-            if (DF == 0) {
-                EnviarCorreo Correo = new EnviarCorreo();
-                Correo.Correo();
-                HiloCorreo.stop();
-                HiloCorreo.start();
-                DF = 10;
-                D = 0;
-                Ds = 0;
+        public void run() {
+            while (true) {
+                int temp = EntraPedidos.size();
+                EnviarCorreo correo = new EnviarCorreo();
+                correo.Correo();
+                int temp2 = EntraPedidos.size();
+                if (temp2 > temp) {
+                    modelo.removeAllElements();
+                    int i = 0;
+                    
+                    while (i < EntraPedidos.size()) {
+                        Pedidos agregar = (Pedidos) EntraPedidos.get(i);
+                        System.out.println(agregar.getCliente());
+
+                        String Cliente = "Cliente: " + agregar.getCliente();
+                        String Recibe = " - Recibe: " + agregar.getRecoje();
+                        String Entrega = " - Entrega:" + agregar.getEntrega();
+
+                        System.out.println(Cliente);
+                        System.out.println(Recibe);
+                        System.out.println(Entrega);
+                        String Datos = String.valueOf(Cliente + Recibe + Entrega);
+
+                        modelo.addElement(Datos);
+
+                        i++;
+                    }
+                    
+                    temp=temp2;
+                }
+                try {
+                    Thread.sleep(20*1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Pprincipal.class.getName()).log(Level.SEVERE,
+                            null, ex);
+                }
 
             }
         }
-    };
+
+    }
+
     private ActionListener acciones = new ActionListener() {
 
         @Override
@@ -121,7 +154,7 @@ public class Pprincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
+        ListaPedidos = new javax.swing.JList();
         texto = new javax.swing.JTextField();
         Dibujar = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -132,6 +165,11 @@ public class Pprincipal extends javax.swing.JFrame {
         TiempoF = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Snap ITC", 0, 24)); // NOI18N
         jLabel9.setText("MAPA");
@@ -153,8 +191,8 @@ public class Pprincipal extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Snap ITC", 0, 24)); // NOI18N
         jLabel6.setText("LISTA DE PEDIDOS");
 
-        jList2.setEnabled(false);
-        jScrollPane2.setViewportView(jList2);
+        ListaPedidos.setEnabled(false);
+        jScrollPane2.setViewportView(ListaPedidos);
 
         Dibujar.setText("ADICIONAR");
         Dibujar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -200,17 +238,6 @@ public class Pprincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Cantidad_RepartidoresRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Dibujar)
-                        .addGap(8, 8, 8))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9)
@@ -228,14 +255,26 @@ public class Pprincipal extends javax.swing.JFrame {
                                         .addComponent(Cantidad_Repartidores, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addComponent(texto, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 33, Short.MAX_VALUE)))
+                        .addGap(0, 37, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Cantidad_RepartidoresRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Dibujar)))
+                        .addGap(8, 8, 8)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel6)
                         .addGap(153, 153, 153))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -251,7 +290,7 @@ public class Pprincipal extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
-                        .addGap(48, 48, 48))
+                        .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
@@ -260,29 +299,29 @@ public class Pprincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Cantidad_Repartidores, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(texto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)))
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(TiempoF, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TiempoT, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, 0)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(Dibujar))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(Dibujar))
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Cantidad_RepartidoresRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(Cantidad_RepartidoresRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -294,10 +333,16 @@ public class Pprincipal extends javax.swing.JFrame {
 
     private void DibujarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DibujarActionPerformed
         // TODO add your handling code here:
-        AdicionarGrafo add = new AdicionarGrafo(texto.getText());
-        texto.setText("");
-        
+        //AdicionarGrafo add = new AdicionarGrafo(texto.getText());
+        //texto.setText("");
+
+
     }//GEN-LAST:event_DibujarActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        new Thread(new Hilo()).start();
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -306,7 +351,7 @@ public class Pprincipal extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -338,6 +383,7 @@ public class Pprincipal extends javax.swing.JFrame {
     public static javax.swing.JLabel Cantidad_Repartidores;
     private javax.swing.JLabel Cantidad_RepartidoresRuta;
     private javax.swing.JButton Dibujar;
+    public javax.swing.JList ListaPedidos;
     private javax.swing.JPanel Panel;
     private javax.swing.JLabel TiempoF;
     private javax.swing.JLabel TiempoT;
@@ -348,10 +394,10 @@ public class Pprincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTextField texto;
     // End of variables declaration//GEN-END:variables
+
 }

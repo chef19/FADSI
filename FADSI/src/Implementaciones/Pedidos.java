@@ -23,6 +23,9 @@ public class Pedidos {
         this.recoje=recoje;
         this.entrega=Entrega;
     }
+    public String getCliente(){
+        return this.nombre;
+    }
     public int getTiempo(){
         return this.tiempo;
     }
@@ -34,8 +37,5 @@ public class Pedidos {
     }
     public void setTiempo(int tiempo){
         this.tiempo=tiempo;
-    }
-    public int getTiempo(int tiempo){
-        return this.tiempo;
     }
 }

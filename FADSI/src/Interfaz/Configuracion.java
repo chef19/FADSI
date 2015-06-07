@@ -191,11 +191,7 @@ public class Configuracion extends javax.swing.JFrame {
         Admi.cs=0;
         Admi.actualizarLabel();
         Admi.tiempo=(int) Integer.valueOf(Tiempo.getText());
-        //***************************************************ACTUALIZAR CORREO
-        Admi.HiloCorreo.start();
-        Admi.DF = 10;
-        Admi.D=0; 
-        Admi.Ds=0;
+        
         
         this.hide();
     }//GEN-LAST:event_ACEPTARActionPerformed
