@@ -11,7 +11,7 @@ package Implementaciones;
  */
 public class Grafo {
     
-    public LinkedList Lista;
+    public static LinkedList Lista;
     public int NumeroAristas;
     public int NumeroNodos;
     
@@ -27,12 +27,14 @@ public class Grafo {
     }
     
     public void AgregarRelacion(NodoGrafo R1, NodoGrafo R2, int Distancia){
-        R1.añadirRelacion(R2,Distancia);
+        R1.añadirRelacion(R2, Distancia);
+        R2.añadirRelacion(R1, Distancia);
         NumeroAristas++;
     }
     
     public void EliminarRelacion(NodoGrafo R1, NodoGrafo R2){
         R1.eliminarRelacion(R2);
+        R2.eliminarRelacion(R1);
         NumeroAristas--;
     }
     
@@ -51,39 +53,53 @@ public class Grafo {
     
     public static void main (String[] args){
         Grafo Graf = new Grafo();
-        NodoGrafo Nodo1 = new NodoGrafo(1);
-        NodoGrafo Nodo2 = new NodoGrafo(2);
-        NodoGrafo Nodo3 = new NodoGrafo(3);
-        NodoGrafo Nodo4 = new NodoGrafo(4);
+        NodoGrafo NodoA = new NodoGrafo("A");
+        NodoGrafo NodoB = new NodoGrafo("B");
+        NodoGrafo NodoC = new NodoGrafo("C");
+        NodoGrafo NodoD = new NodoGrafo("D");
+        NodoGrafo NodoE = new NodoGrafo("E");
+        NodoGrafo NodoF = new NodoGrafo("F");
+        NodoGrafo NodoG = new NodoGrafo("G");
+        NodoGrafo NodoH = new NodoGrafo("H");
+        NodoGrafo NodoI = new NodoGrafo("I");
+        NodoGrafo NodoJ = new NodoGrafo("J");
+        NodoGrafo NodoK = new NodoGrafo("K");
+        System.out.println("Se crean los Nodos Grafo");
         //************************************
         //************************************
-        Graf.Agregar(Nodo1);
-        Graf.Agregar(Nodo2);
-        Graf.Agregar(Nodo3);
-        Graf.Agregar(Nodo4);
+        Graf.Agregar(NodoA);
+        Graf.Agregar(NodoB);
+        Graf.Agregar(NodoC);
+        Graf.Agregar(NodoD);
+        Graf.Agregar(NodoE);
+        Graf.Agregar(NodoF);
+        Graf.Agregar(NodoG);
+        Graf.Agregar(NodoH);
+        Graf.Agregar(NodoI);
+        Graf.Agregar(NodoJ);
+        Graf.Agregar(NodoK);
+        System.out.println("Se agregan al grafo");
         //************************************
         //************************************
-        NodoGrafo Temp = (NodoGrafo) Graf.Lista.current.element;
-        System.out.println(Temp.Dato);
-        Graf.Lista.next();
-        Temp = (NodoGrafo) Graf.Lista.current.element;
-        System.out.println(Temp.Dato);
-        Graf.Lista.next();
-        Temp = (NodoGrafo) Graf.Lista.current.element;
-        System.out.println(Temp.Dato);
-        Graf.Lista.next();
-        Temp = (NodoGrafo) Graf.Lista.current.element;
-        System.out.println(Temp.Dato);
-        Graf.Lista.goToStart();
-        System.out.println("/************************");
-        Graf.AgregarRelacion(Nodo1, Nodo2, 2);
-        Graf.AgregarRelacion(Nodo2, Nodo1, 3);
-        Graf.AgregarRelacion(Nodo2, Nodo3, 8);
-        Graf.AgregarRelacion(Nodo1, Nodo4, 5);
-        Graf.AgregarRelacion(Nodo4, Nodo1, 6);
+        Graf.AgregarRelacion(NodoA, NodoB, 14);
+        Graf.AgregarRelacion(NodoA, NodoD, 8);
+        Graf.AgregarRelacion(NodoA, NodoF, 19);
+        Graf.AgregarRelacion(NodoB, NodoD, 31);
+        Graf.AgregarRelacion(NodoB, NodoE, 3);
+        Graf.AgregarRelacion(NodoD, NodoG, 5);
+        Graf.AgregarRelacion(NodoD, NodoC, 46);
+        Graf.AgregarRelacion(NodoG, NodoE, 31);
+        Graf.AgregarRelacion(NodoG, NodoJ, 45);
+        Graf.AgregarRelacion(NodoG, NodoK, 46);
+        Graf.AgregarRelacion(NodoE, NodoI, 9);
+        Graf.AgregarRelacion(NodoI, NodoH, 30);
+        Graf.AgregarRelacion(NodoI, NodoF, 26);
+        Graf.AgregarRelacion(NodoF, NodoH, 27);
+        Graf.AgregarRelacion(NodoF, NodoC, 4);
+        System.out.println("Se añaden las relaciones");
         //***************************************
         //***************************************
-        Temp = (NodoGrafo) Graf.Lista.current.element;
+        /**NodoGrafo Temp = (NodoGrafo) Graf.Lista.current.element;
         System.out.println(Temp.Relaciones.current.getElemento());
         System.out.println(Temp.Distancias.current.getElemento());
         Temp.Relaciones.next();
@@ -109,5 +125,28 @@ public class Grafo {
         Temp = (NodoGrafo) Graf.Lista.current.element;
         System.out.println(Temp.Relaciones.current.getElemento());
         System.out.println(Temp.Distancias.current.getElemento());
+        **/
+        //***************************************
+        //***************************************
+        
+        System.out.println("Se va a crear el D");
+        Dijkstra dijkstra = new Dijkstra(Graf);
+        System.out.println("Se crean el Dijkstra");
+        dijkstra.ListaNodos.goToStart();
+        NodosDijkstra NodoInicio = (NodosDijkstra) dijkstra.ListaNodos.getElement();
+        dijkstra.ListaNodos.goToPos(7);
+        NodosDijkstra NodoFinal = (NodosDijkstra) dijkstra.ListaNodos.getElement();
+        LinkedList Temp = dijkstra.rutamasCorta(NodoInicio, NodoFinal);
+        NodosDijkstra Temp2 = (NodosDijkstra) Temp.current.element;
+        System.out.println(Temp2.Nodo.Dato);
+        Temp.next();
+        Temp2 = (NodosDijkstra) Temp.current.element;
+        System.out.println(Temp2.Nodo.Dato);
+        Temp.next();
+        Temp2 = (NodosDijkstra) Temp.current.element;
+        System.out.println(Temp2.Nodo.Dato);
+        Temp.next();
+        Temp2 = (NodosDijkstra) Temp.current.element;
+        System.out.println(Temp2.Nodo.Dato);
     }
 }
