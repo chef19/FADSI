@@ -6,18 +6,37 @@
 package Dibujos;
 
 import Interfaz.Pprincipal;
+import java.util.HashMap;
 
-/**
- *
- * @author MICHAEL
- */
+import com.mxgraph.view.mxGraph;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class AdicionarGrafo extends Pprincipal {
-
-    public AdicionarGrafo(String nombre) {
+ArrayList<Integer> eX = new ArrayList();
+ArrayList<Integer> eY = new ArrayList();
+    public AdicionarGrafo(String nome) {
+        for(int i =0;i<500;i++){
+            eX.add(i+29);
+            eY.add(i+9);
+        }
+        Random e = new Random();
+        Random f = new Random();
+        
+        int x = eX.get(e.nextInt(499));
+        int y = eY.get(f.nextInt(499));
+        
+        
         this.getGraph().getModel().beginUpdate();
         Object parent = this.getGraph().getDefaultParent();
-        Object v1 = this.getGraph().insertVertex(parent, null, nombre, 20, 20, 20, 20);
+        Object v1 = this.getGraph().insertVertex(parent, null, nome, x, y, 10, 10,"fontSize=16;fillColor=GREEN;shape=ellipse");//primero x ,segundo y,tercero ancho,alto
+        this.getM().put(nome, v1);
         this.getGraph().getModel().endUpdate();
-
     }
+
+    public AdicionarGrafo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
 }
