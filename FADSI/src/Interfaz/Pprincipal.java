@@ -17,6 +17,7 @@ import Implementaciones.TXT;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -77,15 +78,26 @@ public class Pprincipal extends JFrame {
         @Override
         public void run() {
             while (true) {
+                Buscando.setText("BUSCANDO PEDIDOS");
+                Buscando.setForeground(Color.BLUE);
                 int temp = EntraPedidos.size();
                 EnviarCorreo correo = new EnviarCorreo();
                 correo.Correo();
                 int temp2 = EntraPedidos.size();
+
                 if (temp2 > temp) {
+                    Buscando.setText("NUEVOS PEDIDOS");
+                    Buscando.setForeground(Color.green);
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Pprincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     modelo.removeAllElements();
                     int i = 0;
 
                     while (i < EntraPedidos.size()) {
+
                         Pedidos agregar = (Pedidos) EntraPedidos.get(i);
                         System.out.println(agregar.getCliente());
 
@@ -105,6 +117,8 @@ public class Pprincipal extends JFrame {
 
                     temp = temp2;
                 }
+                Buscando.setText("SIN PEDIDOS");
+                Buscando.setForeground(Color.red);
                 try {
                     Thread.sleep(20 * 1000);
                 } catch (InterruptedException ex) {
@@ -128,6 +142,7 @@ public class Pprincipal extends JFrame {
                 sF--;
             }
             if (sF == 0) {
+
                 t.stop();
                 t.start();
                 sF = tiempo;
@@ -165,7 +180,6 @@ public class Pprincipal extends JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         ListaPedidos = new javax.swing.JList();
-        jToggleButton1 = new javax.swing.JToggleButton();
         Panel = new javax.swing.JPanel();
         Cantidad_RepartidoresRuta = new javax.swing.JLabel();
         TiempoT = new javax.swing.JLabel();
@@ -173,6 +187,7 @@ public class Pprincipal extends JFrame {
         jLabel11 = new javax.swing.JLabel();
         RepartidoresLista = new javax.swing.JComboBox();
         jComboBox1 = new javax.swing.JComboBox();
+        Buscando = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -232,6 +247,8 @@ public class Pprincipal extends JFrame {
         jLabel11.setFont(new java.awt.Font("Snap ITC", 0, 24)); // NOI18N
         jLabel11.setText("TIEMPO X REPARTIDOR");
 
+        Buscando.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -264,8 +281,9 @@ public class Pprincipal extends JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(Buscando, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -290,10 +308,12 @@ public class Pprincipal extends JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Buscando, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                                .addGap(9, 9, 9)))
                         .addGap(7, 7, 7))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -332,14 +352,13 @@ public class Pprincipal extends JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
 
-
         //new Thread(new Hilo()).start();
 
     }//GEN-LAST:event_formWindowActivated
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-                //*******************************************************CREA MAPA  GRAFICO
+        //*******************************************************CREA MAPA  GRAFICO
         TXT leer = new TXT();
 
         int i = 0;
@@ -363,21 +382,21 @@ public class Pprincipal extends JFrame {
                     Direcciones temp = (Direcciones) leer.PUNTOS.getElement();
                     System.out.println("Busca elemento a comparar");
                     Enlaces enlace = (Enlaces) leer.MAPA.getElement();
-                    System.out.println("Codigo:" + temp.getCodigo() + "Enlace:" + enlace.getCodigo()+ "--");
+                    System.out.println("Codigo:" + temp.getCodigo() + "Enlace:" + enlace.getCodigo() + "--");
                     if (temp.getCodigo().equals(enlace.getCodigo())) {
                         System.out.println("Encontro enlace para sacar aristas");
                         LinkedList enl = (LinkedList) enlace.getEnlace();
                         LinkedList peso = (LinkedList) enlace.getPesos();
                         while (h < enl.size()) {
-                            System.out.println("Codigo: "+ temp.getCodigo());
-                            System.out.println("Arista: "+ enl.getElement());
-                            System.out.println("Peso: "+ peso.getElement());
+                            System.out.println("Codigo: " + temp.getCodigo());
+                            System.out.println("Arista: " + enl.getElement());
+                            System.out.println("Peso: " + peso.getElement());
                             String v1 = temp.getCodigo();
                             String enl1 = String.valueOf(enl.getElement());
                             String peso1 = String.valueOf(peso.getElement());
-                            
-                            AgregarArista arist = new AgregarArista(peso1,v1,enl1+" ");
-                            
+
+                            AgregarArista arist = new AgregarArista(peso1, v1, enl1 + " ");
+
                             enl.next();
                             peso.next();
                             h++;
@@ -389,7 +408,7 @@ public class Pprincipal extends JFrame {
                     j++;
                 }
             }
-            h=0;
+            h = 0;
             j = 0;
             leer.MAPA.goToStart();
             leer.PUNTOS.next();
@@ -434,6 +453,7 @@ public class Pprincipal extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Buscando;
     private javax.swing.JLabel Cantidad_RepartidoresRuta;
     public javax.swing.JList ListaPedidos;
     private javax.swing.JPanel Panel;
@@ -451,7 +471,6 @@ public class Pprincipal extends JFrame {
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 
 }
