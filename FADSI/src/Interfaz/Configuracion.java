@@ -8,6 +8,7 @@ package Interfaz;
 import Dibujos.AdicionarGrafo;
 import Implementaciones.Direcciones;
 import Implementaciones.Enlaces;
+import Implementaciones.HiloCronometro;
 import Implementaciones.LinkedList;
 import Implementaciones.TXT;
 import java.io.BufferedReader;
@@ -201,11 +202,21 @@ public class Configuracion extends javax.swing.JFrame {
         int j=0;
         while(j<i){
             Admi.RepartidoresLista.addItem("Repartidor "+(j+1));
+            Admi.ComboTiempo.addItem("Repartidor "+(j+1));
             j++;
-        
         }
-                
         
+        Admi.repartidores=Integer.valueOf(CantidadRepartidores.getText());
+                
+        int cont=0;
+        int crece = Integer.valueOf(CantidadRepartidores.getText());
+        while(cont<crece-1){
+             HiloCronometro RepartidorCrono = new HiloCronometro();
+             Admi.HilosCronometros.add(RepartidorCrono);
+             cont++;
+        }
+        
+        System.out.println("Size: "+Admi.HilosCronometros.size());
         
         Admi.setVisible(true);
         //**************************************************CRONOMETRO
