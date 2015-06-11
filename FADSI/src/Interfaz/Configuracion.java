@@ -8,8 +8,10 @@ package Interfaz;
 import Dibujos.AdicionarGrafo;
 import Implementaciones.Direcciones;
 import Implementaciones.Enlaces;
+import Implementaciones.Grafo;
 import Implementaciones.HiloCronometro;
 import Implementaciones.LinkedList;
+import Implementaciones.NodoGrafo;
 import Implementaciones.TXT;
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +27,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Configuracion extends javax.swing.JFrame {
 
+    Grafo GrafoNuevo;
     /**
      * Creates new form Configuracion
      */
@@ -193,6 +196,112 @@ public class Configuracion extends javax.swing.JFrame {
         }
         leer.Puntos(file);
         leer.Mapa(file);
+        
+        GrafoNuevo = new Grafo<Direcciones>();
+        int i = 1;
+        leer.PUNTOS.goToPos(0);
+        while(i < leer.PUNTOS.size()){
+            NodoGrafo Nuevo = new NodoGrafo(leer.PUNTOS.getElement());
+            GrafoNuevo.Agregar(Nuevo);
+            i++;
+            leer.PUNTOS.next();
+        }
+        
+        NodoGrafo Temp = (NodoGrafo) GrafoNuevo.Lista.current.element;
+        Direcciones Temp2 = (Direcciones) Temp.Dato;
+        System.out.println(Temp2.codigo);
+        System.out.println(Temp.Relaciones.current.getElemento());
+        System.out.println(Temp.Distancias.current.getElemento());
+        Temp.Relaciones.next();
+        Temp.Distancias.next();
+        System.out.println(Temp.Relaciones.current.getElemento());
+        System.out.println(Temp.Distancias.current.getElemento());
+        System.out.println("/************************");
+        GrafoNuevo.Lista.next();
+        Temp = (NodoGrafo) GrafoNuevo.Lista.current.element;
+        Temp2 = (Direcciones) Temp.Dato;
+        System.out.println(Temp2.codigo);
+        System.out.println(Temp.Relaciones.current.getElemento());
+        System.out.println(Temp.Distancias.current.getElemento());
+        Temp.Relaciones.next();
+        Temp.Distancias.next();
+        System.out.println(Temp.Relaciones.current.getElemento());
+        System.out.println(Temp.Distancias.current.getElemento());
+        System.out.println("/************************");
+        
+        
+        leer.MAPA.goToPos(0);
+        i = 1;
+        while(i<leer.MAPA.size()){
+            System.out.println("Entra al while de i");
+            Enlaces ElementoPuntos = (Enlaces) leer.MAPA.getElement();
+            String CodigoEnlace = ElementoPuntos.codigo;
+            System.out.println("Codigo Elemento de MAPA: " + ElementoPuntos.codigo);
+            LinkedList ListaRelaciones = ElementoPuntos.enlaces;
+            System.out.println("Tamaño de ListaRelaciones: " + ElementoPuntos.enlaces.size());
+            LinkedList ListaPesos = ElementoPuntos.pesos;
+            System.out.println("Tamaño de ListaPesos: " + ElementoPuntos.pesos.size());
+            LinkedList ListaAux = GrafoNuevo.Lista;
+            int p = 0;
+            ListaRelaciones.goToStart();
+            ListaPesos.goToStart();
+            while (p < ListaRelaciones.size()){
+                System.out.println("Entra al while de p");
+                int e = 0;
+                GrafoNuevo.Lista.goToStart();
+                while(e < GrafoNuevo.Lista.size()){
+                    System.out.println("Entra al while de e");
+                    NodoGrafo ElementoGrafo = (NodoGrafo) GrafoNuevo.Lista.getElement();
+                    Direcciones DatoElementoGrafo = (Direcciones) ElementoGrafo.Dato;
+                    String CodigodelDato = DatoElementoGrafo.codigo;
+                    if(CodigoEnlace.equals(CodigodelDato)){
+                        System.out.println("Entra al if 1");
+                        int y = 0;
+                        ListaAux.goToStart();
+                        while(y < ListaAux.size()){
+                            System.out.println("Entra al while de y");
+                            NodoGrafo ElementoGrafoAux = (NodoGrafo) ListaAux.getElement();
+                            Direcciones DatoElementoGrafoaux = (Direcciones) ElementoGrafoAux.Dato;
+                            String CodigodelDatoaux = DatoElementoGrafoaux.codigo;
+                            System.out.println("Codigo del Dato del grafo aux " + CodigodelDatoaux);
+                            System.out.println("Elemento con el que se va a comparar " + ListaRelaciones.getElement());
+                            if (CodigodelDatoaux.equals(ListaRelaciones.getElement()+" ")){
+                                System.out.println("Entra al if 2");
+                                GrafoNuevo.AgregarRelacion(ElementoGrafo, ElementoGrafoAux, Integer.valueOf((String)ListaPesos.getElement()));
+                            }
+                            System.out.println("next de ListaAux");
+                            ListaAux.next();
+                            y++;
+                        }
+                    }
+                    System.out.println("next de Lista");
+                    GrafoNuevo.Lista.next();
+                    e++;
+                }
+                p++;
+                ListaRelaciones.next();
+            }
+            i++;
+            System.out.println("next de MAPA");
+            leer.MAPA.next();
+            System.out.println("/**************************************************");
+            
+        }
+        System.out.println("Se termino el metodo");
+        Grafo.Lista.goToPos(0);
+        NodoGrafo Prueba = (NodoGrafo) GrafoNuevo.Lista.getElement();
+        NodoGrafo Prueba2;
+        Direcciones Prueba3 = (Direcciones) Prueba.Dato;
+        System.out.println("Nodo con los que se relaciona 1: " + Prueba3.codigo);
+        int r = 0;
+        while(r < Prueba.Relaciones.size()){
+            Prueba2 = (NodoGrafo) Prueba.Relaciones.getElement();
+            System.out.println("Nodo con los que se relaciona 1: " + Prueba2.Dato);
+            System.out.println("Se recorre el while por "+r+" vez");
+            r++;
+            Prueba.Relaciones.next();
+        }
+        System.out.println("Se sale del while");
     }//GEN-LAST:event_Cargar_MapaActionPerformed
 
     private void ACEPTARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ACEPTARActionPerformed

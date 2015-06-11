@@ -157,4 +157,19 @@ public class LinkedList<T> {
         return (T) current.getElemento();
     }
 
+    public void ToString(){
+        Nodo currentNode = this.head.getNext();
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; currentNode != null; i++)
+        {
+            if (i > 0)
+            {
+                result.append(",");
+            }
+            Object element = currentNode.getElemento();
+            result.append(element == null ? "" : element);
+            currentNode = currentNode.getNext();
+        }
+        System.out.println(result.toString());
+    }
 }

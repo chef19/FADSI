@@ -9,7 +9,7 @@ package Implementaciones;
  *
  * @author Max
  */
-public class Grafo {
+public class Grafo<T> {
     
     public static LinkedList Lista;
     public int NumeroAristas;
@@ -23,12 +23,12 @@ public class Grafo {
     
     public void Agregar (NodoGrafo Nuevo){
         Lista.append(Nuevo);
+        System.out.println("Se agrega un Nodo al grafo");
         NumeroNodos++;
     }
     
     public void AgregarRelacion(NodoGrafo R1, NodoGrafo R2, int Distancia){
         R1.añadirRelacion(R2, Distancia);
-        R2.añadirRelacion(R1, Distancia);
         NumeroAristas++;
     }
     
@@ -96,6 +96,29 @@ public class Grafo {
         Graf.AgregarRelacion(NodoI, NodoF, 26);
         Graf.AgregarRelacion(NodoF, NodoH, 27);
         Graf.AgregarRelacion(NodoF, NodoC, 4);
+        
+        Graf.AgregarRelacion(NodoB, NodoA, 14);
+        Graf.AgregarRelacion(NodoD, NodoA, 8);
+        Graf.AgregarRelacion(NodoF, NodoA, 19);
+        
+        Graf.AgregarRelacion(NodoD, NodoB, 31);
+        Graf.AgregarRelacion(NodoE, NodoB, 3);
+        
+        Graf.AgregarRelacion(NodoG, NodoD, 5);
+        Graf.AgregarRelacion(NodoC, NodoD, 46);
+        
+        Graf.AgregarRelacion(NodoE, NodoG, 31);
+        Graf.AgregarRelacion(NodoJ, NodoG, 45);
+        Graf.AgregarRelacion(NodoJ, NodoG, 46);
+        
+        Graf.AgregarRelacion(NodoI, NodoE, 9);
+        
+        Graf.AgregarRelacion(NodoH, NodoI, 30);
+        Graf.AgregarRelacion(NodoF, NodoI, 26);
+        
+        Graf.AgregarRelacion(NodoH, NodoF, 27);
+        Graf.AgregarRelacion(NodoC, NodoF, 4);
+        
         System.out.println("Se añaden las relaciones");
         //***************************************
         //***************************************
