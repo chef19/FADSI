@@ -311,7 +311,6 @@ public class Configuracion extends javax.swing.JFrame {
         int j=0;
         while(j<i){
             Admi.RepartidoresLista.addItem("Repartidor "+(j+1));
-            Admi.ComboTiempo.addItem("Repartidor "+(j+1));
             j++;
         }
         

@@ -20,7 +20,7 @@ public class Pedidos {
     
     public Pedidos(String nombre,String Recoje,String Entrega){
         this.nombre=nombre;
-        this.recoje=recoje;
+        this.recoje=Recoje;
         this.entrega=Entrega;
     }
     public String getCliente(){

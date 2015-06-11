@@ -8,6 +8,7 @@ package Interfaz;
 import Dibujos.AdicionarGrafo;
 import Dibujos.AgregarArista;
 import Implementaciones.Cola;
+import Implementaciones.CronoTiempo;
 import Implementaciones.Direcciones;
 import Implementaciones.Enlaces;
 import Implementaciones.EnviarCorreo;
@@ -38,6 +39,7 @@ import javax.swing.Timer;
 public class Pprincipal extends JFrame {
 
     public static ArrayList EntraPedidos = new ArrayList();
+    public static ArrayList<CronoTiempo> RepartidoresCrono = new ArrayList();
     public static Cola ColaPedidos = new Cola();
     protected static mxGraph graph = new mxGraph();
     private mxGraphComponent graphComponent;
@@ -46,8 +48,7 @@ public class Pprincipal extends JFrame {
     public DefaultListModel modelo1;
     protected static HashMap m = new HashMap();
     public int repartidores;
-            
-            
+
     public static HashMap getM() {
         return m;
     }
@@ -71,11 +72,22 @@ public class Pprincipal extends JFrame {
         ListaPedidos.setModel(modelo);
         ListaDirecciones.setModel(modelo1);
         t = new Timer(10, acciones);
+        Buscando.setBackground(java.awt.Color.BLACK);
+        Buscando.setForeground(java.awt.Color.BLACK);
 
         graphComponent = new mxGraphComponent(graph);
         graphComponent.setPreferredSize(new Dimension(580, 200));
         Panel.add("GRAFO", graphComponent);
         Panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        
+        /**
+        CronoTiempo n =new CronoTiempo(413,0);
+        CronoTiempo m =new CronoTiempo(134,1);
+        RepartidoresCrono.add(n);
+        RepartidoresCrono.add(m);
+        ComboTiempo.addItem("0");
+        ComboTiempo.addItem("1");
+        */
 
     }
 
@@ -90,10 +102,10 @@ public class Pprincipal extends JFrame {
                 EnviarCorreo correo = new EnviarCorreo();
                 correo.Correo();
                 int temp2 = EntraPedidos.size();
-                
+
                 System.out.println(temp);
                 System.out.println(temp2);
-                
+
                 if (temp2 > temp) {
                     Buscando.setText("NUEVOS PEDIDOS");
                     Buscando.setForeground(Color.green);
@@ -108,7 +120,7 @@ public class Pprincipal extends JFrame {
 
                         String Cliente = "Cliente: " + agregar.getCliente();
                         String Recibe = " - Recibe: " + agregar.getRecoje();
-                        String Entrega = " - Entrega:" + agregar.getEntrega();
+                        String Entrega = " - Entrega: " + agregar.getEntrega();
 
                         System.out.println(Cliente);
                         System.out.println(Recibe);
@@ -121,9 +133,10 @@ public class Pprincipal extends JFrame {
                     }
 
                     temp = temp2;
+                } else {
+                    Buscando.setText("SIN PEDIDOS NUEVOS");
+                    Buscando.setForeground(Color.red);
                 }
-                Buscando.setText("SIN PEDIDOS");
-                Buscando.setForeground(Color.red);
                 try {
                     Thread.sleep(20 * 1000);
                 } catch (InterruptedException ex) {
@@ -197,6 +210,8 @@ public class Pprincipal extends JFrame {
         TiempoT1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 204));
+        setForeground(new java.awt.Color(0, 0, 0));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -263,10 +278,22 @@ public class Pprincipal extends JFrame {
             }
         });
 
+        Buscando.setBackground(new java.awt.Color(0, 0, 0));
         Buscando.setEnabled(false);
 
         TiempoF1.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
         TiempoF1.setText("00");
+
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jTextField1MouseExited(evt);
+            }
+        });
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         TiempoT1.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
         TiempoT1.setText("00:00");
@@ -283,7 +310,8 @@ public class Pprincipal extends JFrame {
                             .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -292,7 +320,7 @@ public class Pprincipal extends JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -304,13 +332,13 @@ public class Pprincipal extends JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(TiempoT1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(107, 107, 107)))))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Buscando, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(Buscando, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -325,8 +353,7 @@ public class Pprincipal extends JFrame {
                         .addComponent(TiempoT, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(86, 86, 86)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(26, 26, 26))
+                        .addGap(0, 620, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,10 +389,9 @@ public class Pprincipal extends JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11)))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
                             .addComponent(jLabel10))
@@ -377,7 +403,8 @@ public class Pprincipal extends JFrame {
                                 .addGap(38, 38, 38)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(TiempoF1)
-                                    .addComponent(TiempoT1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(TiempoT1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -387,7 +414,6 @@ public class Pprincipal extends JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
 
-        
 
     }//GEN-LAST:event_formWindowActivated
 
@@ -430,7 +456,7 @@ public class Pprincipal extends JFrame {
                             String enl1 = String.valueOf(enl.getElement());
                             String peso1 = String.valueOf(peso.getElement());
 
-                            AgregarArista arist = new AgregarArista(peso1, v1, enl1+ " ");
+                            AgregarArista arist = new AgregarArista(peso1, v1, enl1 + " ");
 
                             enl.next();
                             peso.next();
@@ -455,13 +481,30 @@ public class Pprincipal extends JFrame {
 
     private void ComboTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboTiempoActionPerformed
         // TODO add your handling code here:
+        CronoTiempo Mostrar = RepartidoresCrono.get(ComboTiempo.getSelectedIndex());
+        Thread ha = new Thread(Mostrar);
+        ha.start();
         
+        
+        
+
     }//GEN-LAST:event_ComboTiempoActionPerformed
 
     private void ComboTiempoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ComboTiempoMousePressed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_ComboTiempoMousePressed
+
+    private void jTextField1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseExited
+        // TODO add your handling code here:
+        
+        
+        
+    }//GEN-LAST:event_jTextField1MouseExited
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments

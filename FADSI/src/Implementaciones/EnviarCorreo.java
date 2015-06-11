@@ -120,11 +120,8 @@ public class EnviarCorreo extends Thread {
                             cuenta+=1;
                             while (Mensaje1[cuenta] != fin) {
                                 Cliente += Mensaje1[cuenta];
-                                System.out.println(Mensaje1[cuenta]);
                                 cuenta++;
                             }
-                            System.out.println(Mensaje1[cuenta+2]);
-                            System.out.println("SALEEEE");
                             flag = false;
                             flag1=true;
                         }
@@ -134,11 +131,8 @@ public class EnviarCorreo extends Thread {
                             cuenta+=1;
                             while (Mensaje1[cuenta] != fin) {
                                 Recibe += Mensaje1[cuenta];
-                                System.out.println(Mensaje1[cuenta]);
                                 cuenta++;
                             }
-                            System.out.println("Recibe: "+Recibe);
-                            System.out.println("SALEEEE");
                             flag2=true;
                             flag1=false;
                             
@@ -149,23 +143,17 @@ public class EnviarCorreo extends Thread {
                             cuenta+=+1;
                             while (Mensaje1[cuenta] != fin) {
                                 Entrega += Mensaje1[cuenta];
-                                System.out.println(Mensaje1[cuenta]);
                                 cuenta++;
                             }
-                            System.out.println(Entrega);
-                            System.out.println("SALEEEE2");
                             break;
                         }
                     }
                     cuenta++;
                 }
                 Pprincipal Admi = new Pprincipal();
-                Pedidos pedi = new Pedidos(String.valueOf(Cliente),String.valueOf(Recibe),String.valueOf(Entrega));
+                Pedidos pedi = new Pedidos(Cliente,Recibe,Entrega);
                 Admi.EntraPedidos.add(pedi);
                 
-                System.out.println("Cliente: " + Cliente);
-                System.out.println("Recibe: " + Recibe);
-                System.out.println("Entrega: " + Entrega);
 
                 //inbox.close(false)
                 //inbox.setFlags(new Message[]{messages[i]}, new Flags(Flags.Flag.SEEN), true);
