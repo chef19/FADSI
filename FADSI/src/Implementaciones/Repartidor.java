@@ -13,31 +13,34 @@ import java.util.ArrayList;
  */
 public class Repartidor {
 
-    public String nombre;
-    public int tiempo;
-    public static int encargosMaximos;
-    public static ArrayList encargos;
+    public String recibe;
+    public String llegada;
+    public int encargosMaximos;
+    public int encargos = 0;
 
-    public Repartidor(String nombre, int encargosM) {
-        this.nombre = nombre;
-        this.encargosMaximos = encargosM;
+    public Repartidor() {
+    }
+    
+    public void setDatos(String recibe, String Llegada, int encargosMaximos) {
+        this.recibe = recibe;
+        this.llegada = Llegada;
+        this.encargosMaximos = encargosMaximos;
     }
 
-    public String getNombre() {
-        return this.nombre;
+    public String getRecibe() {
+        return this.recibe;
     }
 
-    public void seTiempo(int tiempo) {
-        this.tiempo = tiempo;
+    public String getLlegada() {
+        return this.llegada;
     }
-    public int addEncargo(Pedidos encargo){
-        if(encargos.size()==encargosMaximos-1){
-            return -1;
+
+    public boolean addEncargo() {
+        if (encargos + 1 < encargosMaximos) {
+            encargos += 1;
+            return true;
+        } else {
+            return false;
         }
-        else{
-            encargos.add(encargo);
-            return 0;
-        }
     }
-
 }

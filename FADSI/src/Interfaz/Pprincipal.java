@@ -14,6 +14,7 @@ import Implementaciones.Enlaces;
 import Implementaciones.EnviarCorreo;
 import Implementaciones.Pedidos;
 import Implementaciones.LinkedList;
+import Implementaciones.Repartidor;
 import Implementaciones.TXT;
 
 import com.mxgraph.swing.mxGraphComponent;
@@ -37,17 +38,24 @@ import javax.swing.Timer;
  * @author MICHAEL
  */
 public class Pprincipal extends JFrame {
-
+    
+    public int repartidores;
+        
     public static ArrayList EntraPedidos = new ArrayList();
+    public static ArrayList<Repartidor> Repartidores = new ArrayList();
     public static ArrayList<CronoTiempo> RepartidoresCrono = new ArrayList();
     public static Cola ColaPedidos = new Cola();
+    
     protected static mxGraph graph = new mxGraph();
     private mxGraphComponent graphComponent;
+    
     public int tiempo;
+    
     public DefaultListModel modelo;
     public DefaultListModel modelo1;
+    
     protected static HashMap m = new HashMap();
-    public int repartidores;
+    
 
     public static HashMap getM() {
         return m;

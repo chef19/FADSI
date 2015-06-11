@@ -12,6 +12,7 @@ import Implementaciones.Grafo;
 
 import Implementaciones.LinkedList;
 import Implementaciones.NodoGrafo;
+import Implementaciones.Repartidor;
 import Implementaciones.TXT;
 import java.io.BufferedReader;
 import java.io.File;
@@ -310,7 +311,9 @@ public class Configuracion extends javax.swing.JFrame {
         int i = Integer.valueOf(CantidadRepartidores.getText());
         int j=0;
         while(j<i){
+            Repartidor repart = new Repartidor();
             Admi.RepartidoresLista.addItem("Repartidor "+(j+1));
+            Admi.Repartidores.add(repart);
             j++;
         }
         
