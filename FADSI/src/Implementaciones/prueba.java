@@ -11,13 +11,15 @@ package Implementaciones;
  */
 public class prueba {
     public static void main(String args[]){
-        
-        EnviarCorreo hola=new EnviarCorreo();
+        String numero = "18";
+        int numero1= Integer.valueOf(numero);
+        System.out.println(numero1);
+        //EnviarCorreo hola=new EnviarCorreo();
         //EnviarCorreo hola2=new EnviarCorreo();
         //hola.Correo();
         //hola.run();
         
-        hola.Correo();//EnviaEmail("ricardodh123@gmail.com");
+        //hola.Correo();//EnviaEmail("ricardodh123@gmail.com");
         
         
     }

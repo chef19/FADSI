@@ -9,7 +9,7 @@ import Dibujos.AdicionarGrafo;
 import Implementaciones.Direcciones;
 import Implementaciones.Enlaces;
 import Implementaciones.Grafo;
-import Implementaciones.HiloCronometro;
+
 import Implementaciones.LinkedList;
 import Implementaciones.NodoGrafo;
 import Implementaciones.TXT;
@@ -320,7 +320,7 @@ public class Configuracion extends javax.swing.JFrame {
         int cont=0;
         int crece = Integer.valueOf(CantidadRepartidores.getText());
         
-        System.out.println("Size: "+Admi.HilosCronometros.size());
+        
         
         Admi.setVisible(true);
         //**************************************************CRONOMETRO

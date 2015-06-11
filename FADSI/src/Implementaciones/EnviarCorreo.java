@@ -9,6 +9,7 @@ package Implementaciones;
  *
  * @author Ricardo Araya
  */
+import Interfaz.Pprincipal;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -82,13 +83,14 @@ public class EnviarCorreo extends Thread {
 
                 Multipart mp = (Multipart) messages[i].getContent();
                 BodyPart bp = mp.getBodyPart(0);
-                /**
-                 * System.out.println("Message " + (i + 1));
-                 * System.out.println("From : " + messages[i].getFrom()[0]);
-                 * System.out.println("Subject : " + messages[i].getSubject());
-                 * System.out.println("Sent Date : " +
-                 * messages[i].getSentDate()); System.out.println("Content:"+ bp.getContent());
-                 */
+
+                System.out.println("Message " + (i + 1));
+                System.out.println("From : " + messages[i].getFrom()[0]);
+                System.out.println("Subject : " + messages[i].getSubject());
+                System.out.println("Sent Date : "
+                        + messages[i].getSentDate());
+                System.out.println("Content:" + bp.getContent());
+
                 Address usuario = messages[i].getFrom()[0];
                 System.out.println(usuario);
                 EnviarMail(usuario);
@@ -100,68 +102,77 @@ public class EnviarCorreo extends Thread {
                 } else {
                     inbox.getMessage(i).getContent();//lee el mensaje y lo marca como leido
                 }
+
+                int cuenta = 0;
+                char inicia = ':';
+                char fin = '\n';
+                boolean flag = true;
+                boolean flag1 = false;
+                boolean flag2 = false;
+                String Cliente = "";
+                String Recibe = "";
+                String Entrega = "";
+                String Mensaje = String.valueOf(bp.getContent());
+                char[] Mensaje1 = Mensaje.toCharArray();
+                while (cuenta < Mensaje1.length) {
+                    if (flag) {
+                        if (Mensaje1[cuenta] == inicia) {
+                            cuenta+=1;
+                            while (Mensaje1[cuenta] != fin) {
+                                Cliente += Mensaje1[cuenta];
+                                System.out.println(Mensaje1[cuenta]);
+                                cuenta++;
+                            }
+                            System.out.println(Mensaje1[cuenta+2]);
+                            System.out.println("SALEEEE");
+                            flag = false;
+                            flag1=true;
+                        }
+                    }
+                    if (flag1) {
+                        if (Mensaje1[cuenta] == inicia) {
+                            cuenta+=1;
+                            while (Mensaje1[cuenta] != fin) {
+                                Recibe += Mensaje1[cuenta];
+                                System.out.println(Mensaje1[cuenta]);
+                                cuenta++;
+                            }
+                            System.out.println("Recibe: "+Recibe);
+                            System.out.println("SALEEEE");
+                            flag2=true;
+                            flag1=false;
+                            
+                        }
+                    }
+                    if (flag2) {
+                        if (Mensaje1[cuenta] == inicia) {
+                            cuenta+=+1;
+                            while (Mensaje1[cuenta] != fin) {
+                                Entrega += Mensaje1[cuenta];
+                                System.out.println(Mensaje1[cuenta]);
+                                cuenta++;
+                            }
+                            System.out.println(Entrega);
+                            System.out.println("SALEEEE2");
+                            break;
+                        }
+                    }
+                    cuenta++;
+                }
+                Pprincipal Admi = new Pprincipal();
+                Pedidos pedi = new Pedidos(String.valueOf(Cliente),String.valueOf(Recibe),String.valueOf(Entrega));
+                Admi.EntraPedidos.add(pedi);
+                
+                System.out.println("Cliente: " + Cliente);
+                System.out.println("Recibe: " + Recibe);
+                System.out.println("Entrega: " + Entrega);
+
                 //inbox.close(false)
                 //inbox.setFlags(new Message[]{messages[i]}, new Flags(Flags.Flag.SEEN), true);
-
             }
 
             inbox.close(true);
             store.close();
-
-            Message msg = inbox.getMessage(inbox.getMessageCount());
-            Address[] in = msg.getFrom();
-            for (Address address : in) {
-                System.out.println("FROM:" + address.toString());
-            }
-            Multipart mp = (Multipart) msg.getContent();
-            BodyPart bp = mp.getBodyPart(0);
-            //System.out.println("SENT DATE:" + msg.getSentDate());
-            //System.out.println("SUBJECT:" + msg.getSubject());
-            //System.out.println("CONTENT:" + bp.getContent());
-            System.out.println("CONTENT:" + bp.getContent());
-            int cuenta;
-            char termina = ':';
-            char fin = '\n';
-            boolean flag = true;
-            boolean flag1 = true;
-            boolean flag2 = true;
-            String Cliente = "";
-            String Recibe = "";
-            String Entrega = "";
-            String Mensaje = String.valueOf(bp.getContent());
-            char[] Mensaje1 = Mensaje.toCharArray();
-            for (cuenta = 0; cuenta < Mensaje1.length; cuenta++) {
-                if (flag) {
-                    if(Mensaje1[cuenta]==fin){
-                        flag1=false;
-                        flag=false;
-                    }
-                    if (Mensaje1[cuenta] == termina) {
-                        Cliente+=String.valueOf(Mensaje1[cuenta]);
-                    }
-                }
-                if(flag1=false){
-                    if(Mensaje1[cuenta]==fin){
-                        flag1=true;
-                        flag2=false;
-                    }
-                    if (Mensaje1[cuenta] == termina) {
-                        Recibe+=String.valueOf(Mensaje1[cuenta]);
-                    }
-                }
-                if(flag1=false){
-                    if(Mensaje1[cuenta]==fin){
-                        break;
-                    }
-                    if (Mensaje1[cuenta] == termina) {
-                        Entrega+=String.valueOf(Mensaje1[cuenta]);
-                    }
-                }
-
-            }
-            System.out.println("Cliente: "+ Cliente);
-            System.out.println("Recibe: "+Recibe);
-            System.out.println("Entrega: "+Entrega);
 
         } catch (Exception mex) {
             mex.printStackTrace();

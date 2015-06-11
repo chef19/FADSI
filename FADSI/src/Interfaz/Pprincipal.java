@@ -11,7 +11,6 @@ import Implementaciones.Cola;
 import Implementaciones.Direcciones;
 import Implementaciones.Enlaces;
 import Implementaciones.EnviarCorreo;
-import Implementaciones.HiloCronometro;
 import Implementaciones.Pedidos;
 import Implementaciones.LinkedList;
 import Implementaciones.TXT;
@@ -47,7 +46,6 @@ public class Pprincipal extends JFrame {
     public DefaultListModel modelo1;
     protected static HashMap m = new HashMap();
     public int repartidores;
-    public static ArrayList<HiloCronometro> HilosCronometros = new ArrayList();
             
             
     public static HashMap getM() {
@@ -92,15 +90,14 @@ public class Pprincipal extends JFrame {
                 EnviarCorreo correo = new EnviarCorreo();
                 correo.Correo();
                 int temp2 = EntraPedidos.size();
-
+                
+                System.out.println(temp);
+                System.out.println(temp2);
+                
                 if (temp2 > temp) {
                     Buscando.setText("NUEVOS PEDIDOS");
                     Buscando.setForeground(Color.green);
-                    try {
-                        Thread.sleep(4000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Pprincipal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    System.out.println("****");
                     modelo.removeAllElements();
                     int i = 0;
 
@@ -117,7 +114,7 @@ public class Pprincipal extends JFrame {
                         System.out.println(Recibe);
                         System.out.println(Entrega);
                         String Datos = String.valueOf(Cliente + Recibe + Entrega);
-
+                        System.out.println("****2");
                         modelo.addElement(Datos);
 
                         i++;
@@ -453,23 +450,11 @@ public class Pprincipal extends JFrame {
             i++;
 
         }
-        //new Thread(new Hilo()).start();
+        new Thread(new Hilo()).start();
     }//GEN-LAST:event_formWindowOpened
 
     private void ComboTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboTiempoActionPerformed
         // TODO add your handling code here:
-        if(ComboTiempo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog (null, "Usuario seleccione un repartidor dentro de esta listque se le muestra", "Title", JOptionPane.ERROR_MESSAGE);
-            
-        }
-        else{
-            HiloCronometro hilo =(HiloCronometro) HilosCronometros.get(ComboTiempo.getSelectedIndex());
-            System.out.println("Asigana el Hilo");
-            hilo.setTiempo(Integer.valueOf(jTextField1.getText()));
-            Thread hilo1 = new Thread(hilo);
-            hilo1.start();
-            
-        }
         
     }//GEN-LAST:event_ComboTiempoActionPerformed
 
