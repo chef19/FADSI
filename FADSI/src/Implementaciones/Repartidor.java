@@ -13,34 +13,34 @@ import java.util.ArrayList;
  */
 public class Repartidor {
 
-    public String recibe;
-    public String llegada;
     public int encargosMaximos;
     public int encargos = 0;
+    public LinkedList recibe = new LinkedList();
+    public LinkedList llegada = new LinkedList();
 
-    public Repartidor() {
+    public Repartidor(int i) {
+        this.encargosMaximos = i;
+    }
+    public boolean permiso(){
+        if(encargos+1<encargosMaximos){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
-    public void setDatos(String recibe, String Llegada, int encargosMaximos) {
-        this.recibe = recibe;
-        this.llegada = Llegada;
-        this.encargosMaximos = encargosMaximos;
+    public void agregar(String recoje, String llega) {
+        recibe.append(recoje);
+        llegada.append(llega);
+
     }
 
-    public String getRecibe() {
+    public LinkedList getRecibe() {
         return this.recibe;
     }
 
-    public String getLlegada() {
+    public LinkedList getLlegada() {
         return this.llegada;
-    }
-
-    public boolean addEncargo() {
-        if (encargos + 1 < encargosMaximos) {
-            encargos += 1;
-            return true;
-        } else {
-            return false;
-        }
     }
 }

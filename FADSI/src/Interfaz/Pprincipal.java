@@ -38,24 +38,23 @@ import javax.swing.Timer;
  * @author MICHAEL
  */
 public class Pprincipal extends JFrame {
-    
+
     public int repartidores;
-        
+
     public static ArrayList EntraPedidos = new ArrayList();
-    public static ArrayList<Repartidor> Repartidores = new ArrayList();
+    public static LinkedList Repartidores = new LinkedList();
     public static ArrayList<CronoTiempo> RepartidoresCrono = new ArrayList();
     public static Cola ColaPedidos = new Cola();
-    
+
     protected static mxGraph graph = new mxGraph();
     private mxGraphComponent graphComponent;
-    
+
     public int tiempo;
-    
+
     public DefaultListModel modelo;
     public DefaultListModel modelo1;
-    
+
     protected static HashMap m = new HashMap();
-    
 
     public static HashMap getM() {
         return m;
@@ -87,16 +86,13 @@ public class Pprincipal extends JFrame {
         graphComponent.setPreferredSize(new Dimension(580, 200));
         Panel.add("GRAFO", graphComponent);
         Panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        
-        /**
-        CronoTiempo n =new CronoTiempo(413,0);
-        CronoTiempo m =new CronoTiempo(134,1);
-        RepartidoresCrono.add(n);
-        RepartidoresCrono.add(m);
-        ComboTiempo.addItem("0");
-        ComboTiempo.addItem("1");
-        */
 
+        /**
+         * CronoTiempo n =new CronoTiempo(413,0); CronoTiempo m =new
+         * CronoTiempo(134,1); RepartidoresCrono.add(n);
+         * RepartidoresCrono.add(m); ComboTiempo.addItem("0");
+         * ComboTiempo.addItem("1");
+         */
     }
 
     public class Hilo implements Runnable {
@@ -130,15 +126,35 @@ public class Pprincipal extends JFrame {
                         String Recibe = " - Recibe: " + agregar.getRecoje();
                         String Entrega = " - Entrega: " + agregar.getEntrega();
 
-                        System.out.println(Cliente);
-                        System.out.println(Recibe);
-                        System.out.println(Entrega);
                         String Datos = String.valueOf(Cliente + Recibe + Entrega);
-                        System.out.println("****2");
+
                         modelo.addElement(Datos);
 
                         i++;
                     }
+                    while (ColaPedidos.size() != 0) {
+                        Pedidos elemento = (Pedidos) ColaPedidos.dequeue();
+                        Repartidor R = (Repartidor) Repartidores.getElement();
+                        if (Repartidores.size() == 0) {
+                            JOptionPane.showMessageDialog(null, "NO HAY REPARTIDORES DISPONIBLES AUN");
+                            break;
+                        }
+                        if (R.permiso()) {
+                            R.agregar(elemento.getRecoje(), elemento.getEntrega());
+                        } else {
+                            if ((Repartidores.size() + 1 == repartidores)) {
+                                JOptionPane.showMessageDialog(null, "A LLEGADO AL MAXIMO DE REPARTIDORES DISPONIBLES");
+                            } else {
+                                Repartidores.next();
+                            }
+
+                        }
+
+                    }
+                    
+                    Repartidores.goToStart();
+                    Repartidor Re = (Repartidor) Repartidores.getElement();
+                    System.out.println("Encargos: "+Re.encargos);
 
                     temp = temp2;
                 } else {
@@ -492,9 +508,7 @@ public class Pprincipal extends JFrame {
         CronoTiempo Mostrar = RepartidoresCrono.get(ComboTiempo.getSelectedIndex());
         Thread ha = new Thread(Mostrar);
         ha.start();
-        
-        
-        
+
 
     }//GEN-LAST:event_ComboTiempoActionPerformed
 
@@ -505,9 +519,8 @@ public class Pprincipal extends JFrame {
 
     private void jTextField1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseExited
         // TODO add your handling code here:
-        
-        
-        
+
+
     }//GEN-LAST:event_jTextField1MouseExited
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

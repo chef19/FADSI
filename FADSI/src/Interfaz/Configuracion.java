@@ -311,9 +311,9 @@ public class Configuracion extends javax.swing.JFrame {
         int i = Integer.valueOf(CantidadRepartidores.getText());
         int j=0;
         while(j<i){
-            Repartidor repart = new Repartidor();
+            Repartidor repart = new Repartidor(i);
             Admi.RepartidoresLista.addItem("Repartidor "+(j+1));
-            Admi.Repartidores.add(repart);
+            Admi.Repartidores.append(repart);
             j++;
         }
         

@@ -150,9 +150,12 @@ public class EnviarCorreo extends Thread {
                     }
                     cuenta++;
                 }
+                
                 Pprincipal Admi = new Pprincipal();
+                
                 Pedidos pedi = new Pedidos(Cliente,Recibe,Entrega);
                 Admi.EntraPedidos.add(pedi);
+                Admi.ColaPedidos.enqueue(pedi);
                 
 
                 //inbox.close(false)
