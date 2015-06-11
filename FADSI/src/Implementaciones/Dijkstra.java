@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class Dijkstra {
     Grafo grafo;
     LinkedList ListaNodos;
+    int PesoTotal;
     
     public Dijkstra(Grafo grafo){
         this.grafo = grafo;
@@ -215,6 +216,8 @@ public class Dijkstra {
         NodosDijkstra Comparativo = new NodosDijkstra(); // Se inicializa una variable para buscar el camino
         LinkedList Camino = new LinkedList(); //Lista que tendra el camino
         Comparativo = (NodosDijkstra) Final; //Se asigna el elemento actual a Comparativo
+        Camino.append(Comparativo);
+        PesoTotal = Comparativo.Pesoacumulado;
         if (Comparativo == Final){ //if para saber si ya se encontro el nodo final
             while(Comparativo != Inicial){ //While para saber cuando ya esta el listo camino
                 Camino.append(Comparativo.getRelacionado()); //Se añade el elemento al camino

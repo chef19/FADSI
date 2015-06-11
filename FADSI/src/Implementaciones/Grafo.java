@@ -171,5 +171,6 @@ public class Grafo<T> {
         Temp.next();
         Temp2 = (NodosDijkstra) Temp.current.element;
         System.out.println(Temp2.Nodo.Dato);
+        System.out.println(dijkstra.PesoTotal);
     }
 }
