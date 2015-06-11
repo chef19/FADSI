@@ -292,7 +292,7 @@ public class Configuracion extends javax.swing.JFrame {
         NodoGrafo Prueba = (NodoGrafo) GrafoNuevo.Lista.getElement();
         NodoGrafo Prueba2;
         Direcciones Prueba3 = (Direcciones) Prueba.Dato;
-        System.out.println("Nodo con los que se relaciona 1: " + Prueba3.codigo);
+        System.out.println("Nodo: " + Prueba3.codigo);
         int r = 0;
         while(r < Prueba.Relaciones.size()){
             Prueba2 = (NodoGrafo) Prueba.Relaciones.getElement();
@@ -319,11 +319,6 @@ public class Configuracion extends javax.swing.JFrame {
                 
         int cont=0;
         int crece = Integer.valueOf(CantidadRepartidores.getText());
-        while(cont<crece-1){
-             HiloCronometro RepartidorCrono = new HiloCronometro();
-             Admi.HilosCronometros.add(RepartidorCrono);
-             cont++;
-        }
         
         System.out.println("Size: "+Admi.HilosCronometros.size());
         

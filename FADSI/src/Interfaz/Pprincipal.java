@@ -402,7 +402,7 @@ public class Pprincipal extends JFrame {
         int i = 0;
         int j = 0;
         int h = 0;
-
+        leer.PUNTOS.goToStart();
         while (i < leer.PUNTOS.size()) {
             if (i != 0) {
                 Direcciones temp = (Direcciones) leer.PUNTOS.getElement();
@@ -433,7 +433,7 @@ public class Pprincipal extends JFrame {
                             String enl1 = String.valueOf(enl.getElement());
                             String peso1 = String.valueOf(peso.getElement());
 
-                            AgregarArista arist = new AgregarArista(peso1, v1, enl1 + " ");
+                            AgregarArista arist = new AgregarArista(peso1, v1, enl1+ " ");
 
                             enl.next();
                             peso.next();

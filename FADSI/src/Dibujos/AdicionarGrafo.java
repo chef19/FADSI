@@ -26,17 +26,12 @@ ArrayList<Integer> eY = new ArrayList();
         int x = eX.get(e.nextInt(499));
         int y = eY.get(f.nextInt(499));
         
-        
+        System.out.println("NOME: "+nome+" X: "+ x+" Y: "+y);
         this.getGraph().getModel().beginUpdate();
         Object parent = this.getGraph().getDefaultParent();
         Object v1 = this.getGraph().insertVertex(parent, null, nome, x, y, 10, 10,"fontSize=16;fillColor=GREEN;shape=ellipse");//primero x ,segundo y,tercero ancho,alto
         this.getM().put(nome, v1);
         this.getGraph().getModel().endUpdate();
     }
-
-    public AdicionarGrafo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 
 }
