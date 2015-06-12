@@ -224,6 +224,7 @@ public class Configuracion extends javax.swing.JFrame {
             NodosDijkstra ND1 = Dijkstra.BuscarNodo(Juan.PosActual);
             NodosDijkstra ND2 = Dijkstra.BuscarNodo(NodoTemp);       
             Dijkstra.rutamasCorta(ND1, ND2);
+            Total =+ Dijkstra.PesoTotal;
             int y = 0;
             Dijkstra.Camino.goToStart();
             while(y <  Dijkstra.Camino.size()){
@@ -250,6 +251,7 @@ public class Configuracion extends javax.swing.JFrame {
             Dijkstra Dijkstra2 = new Dijkstra(GrafoTemp);
             NodosDijkstra ND3 = Dijkstra.BuscarNodo(NGTemp);       
             Dijkstra.rutamasCorta(ND2, ND3);
+            Total =+ Dijkstra.PesoTotal;
             y = 0;
             Dijkstra.Camino.goToStart();
             while(y <  Dijkstra.Camino.size()){
