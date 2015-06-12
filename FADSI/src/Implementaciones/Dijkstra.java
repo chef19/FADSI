@@ -13,9 +13,10 @@ import java.util.ArrayList;
  * @author Max
  */
 public class Dijkstra {
-    Grafo grafo;
-    LinkedList ListaNodos;
-    int PesoTotal;
+    public Grafo grafo;
+    public LinkedList ListaNodos;
+    public int PesoTotal;
+    public LinkedList Camino;
     
     public Dijkstra(Grafo grafo){
         this.grafo = grafo;
@@ -172,6 +173,8 @@ public class Dijkstra {
         }
         ListaNodos.goToStart();
         int e = 0;
+        NodosDijkstra Temp4 =(NodosDijkstra) ListaNodos.getElement();
+        System.out.println("Valor que se asignara a 'Comparativo'"+Temp4.Nodo.Dato);
         NodosDijkstra Comparativo = (NodosDijkstra) ListaNodos.getElement();
         while(e < ListaNodos.size()){
             Temp = (NodosDijkstra) ListaNodos.getElement();
@@ -193,6 +196,7 @@ public class Dijkstra {
             ListaNodos.next();
             e++;
         }
+        System.out.println("Peso acumulado: " + Comparativo.Pesoacumulado);
         if(Comparativo.Pesoacumulado==0){
             int h = 0;
             ListaNodos.goToStart();
@@ -209,12 +213,27 @@ public class Dijkstra {
         }
     }
     
+    public NodosDijkstra BuscarNodo(NodoGrafo Nodo){
+        NodosDijkstra ND = new NodosDijkstra();
+        int i = 0;
+        ListaNodos.goToStart();
+        while(i < ListaNodos.size()){
+            ND = (NodosDijkstra) ListaNodos.getElement();
+            NodoGrafo NG = ND.Nodo;
+            if(NG == Nodo){
+                i = ListaNodos.size();
+            }
+            ListaNodos.next();
+        }
+        return ND;
+    }
+    
     public LinkedList rutamasCorta(NodosDijkstra Inicial, NodosDijkstra Final){
         Recorrer(Inicial);
         ListaNodos.goToStart(); //Se va al inicio de las lista de Nodos
         int e = 0; //para recorrer la lista y poder buscar el camino
         NodosDijkstra Comparativo = new NodosDijkstra(); // Se inicializa una variable para buscar el camino
-        LinkedList Camino = new LinkedList(); //Lista que tendra el camino
+        Camino = new LinkedList(); //Lista que tendra el camino
         Comparativo = (NodosDijkstra) Final; //Se asigna el elemento actual a Comparativo
         Camino.append(Comparativo);
         PesoTotal = Comparativo.Pesoacumulado;

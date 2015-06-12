@@ -142,12 +142,8 @@ public class Pprincipal extends JFrame {
                         if (R.permiso()) {
                             R.agregar(elemento.getRecoje(), elemento.getEntrega());
                         } else {
-                            if ((Repartidores.size() + 1 == repartidores)) {
-                                JOptionPane.showMessageDialog(null, "A LLEGADO AL MAXIMO DE REPARTIDORES DISPONIBLES");
-                            } else {
-                                Repartidores.next();
-                            }
-
+                            Configuracion.GenerarRuta(R);
+                            Repartidores.next();
                         }
 
                     }
@@ -167,7 +163,6 @@ public class Pprincipal extends JFrame {
                     Logger.getLogger(Pprincipal.class.getName()).log(Level.SEVERE,
                             null, ex);
                 }
-
             }
         }
 

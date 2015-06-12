@@ -67,12 +67,12 @@ public class Grafo<T> {
         System.out.println("Se crean los Nodos Grafo");
         //************************************
         //************************************
-        Graf.Agregar(NodoA);
+        Graf.Agregar(NodoF);
         Graf.Agregar(NodoB);
         Graf.Agregar(NodoC);
         Graf.Agregar(NodoD);
         Graf.Agregar(NodoE);
-        Graf.Agregar(NodoF);
+        Graf.Agregar(NodoA);
         Graf.Agregar(NodoG);
         Graf.Agregar(NodoH);
         Graf.Agregar(NodoI);
@@ -151,26 +151,24 @@ public class Grafo<T> {
         **/
         //***************************************
         //***************************************
+        Lista.goToStart();
+        System.out.println("/************************");
+        NodoGrafo Temp1234 = (NodoGrafo) Lista.getElement();
+        System.out.println(Temp1234.Dato);
+        System.out.println("/************************");
+        Temp1234 = (NodoGrafo) Lista.head.element;
+        System.out.println(Temp1234.Dato);
+        System.out.println("/************************");
         
         System.out.println("Se va a crear el D");
         Dijkstra dijkstra = new Dijkstra(Graf);
         System.out.println("Se crean el Dijkstra");
         dijkstra.ListaNodos.goToStart();
         NodosDijkstra NodoInicio = (NodosDijkstra) dijkstra.ListaNodos.getElement();
-        dijkstra.ListaNodos.goToPos(7);
+        dijkstra.ListaNodos.goToPos(5);
         NodosDijkstra NodoFinal = (NodosDijkstra) dijkstra.ListaNodos.getElement();
         LinkedList Temp = dijkstra.rutamasCorta(NodoInicio, NodoFinal);
         NodosDijkstra Temp2 = (NodosDijkstra) Temp.current.element;
-        System.out.println(Temp2.Nodo.Dato);
-        Temp.next();
-        Temp2 = (NodosDijkstra) Temp.current.element;
-        System.out.println(Temp2.Nodo.Dato);
-        Temp.next();
-        Temp2 = (NodosDijkstra) Temp.current.element;
-        System.out.println(Temp2.Nodo.Dato);
-        Temp.next();
-        Temp2 = (NodosDijkstra) Temp.current.element;
-        System.out.println(Temp2.Nodo.Dato);
         System.out.println(dijkstra.PesoTotal);
     }
 }

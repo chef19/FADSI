@@ -17,9 +17,12 @@ public class Repartidor {
     public int encargos = 0;
     public LinkedList recibe = new LinkedList();
     public LinkedList llegada = new LinkedList();
+    public NodoGrafo PosActual;
+    public LinkedList Camino = new LinkedList();
 
-    public Repartidor(int i) {
+    public Repartidor(int i, NodoGrafo Inicial) {
         this.encargosMaximos = i;
+        PosActual = Inicial;
     }
     public boolean permiso(){
         if(encargos+1<encargosMaximos){

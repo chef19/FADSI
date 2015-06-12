@@ -6,12 +6,14 @@
 package Interfaz;
 
 import Dibujos.AdicionarGrafo;
+import Implementaciones.Dijkstra;
 import Implementaciones.Direcciones;
 import Implementaciones.Enlaces;
 import Implementaciones.Grafo;
 
 import Implementaciones.LinkedList;
 import Implementaciones.NodoGrafo;
+import Implementaciones.NodosDijkstra;
 import Implementaciones.Repartidor;
 import Implementaciones.TXT;
 import java.io.BufferedReader;
@@ -28,7 +30,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Configuracion extends javax.swing.JFrame {
 
-    Grafo GrafoNuevo;
+    static Grafo GrafoNuevo;
     /**
      * Creates new form Configuracion
      */
@@ -179,6 +181,91 @@ public class Configuracion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public static Grafo Grafoaux(NodoGrafo Inicial){
+        Grafo GrafoAux = new Grafo();
+        GrafoAux.Agregar(Inicial);
+        int i = 0;
+        GrafoNuevo.Lista.goToStart();
+        while(i < GrafoNuevo.Lista.size()){
+            if(GrafoNuevo.Lista.getElement() != Inicial){
+                GrafoAux.Agregar((NodoGrafo) GrafoNuevo.Lista.getElement());
+                GrafoNuevo.Lista.next();
+            }
+            else{
+                GrafoNuevo.Lista.next();
+            }
+            i++;
+        }
+        return GrafoAux;
+    }
+    
+    public static int GenerarRuta(Repartidor Juan){
+        Grafo GrafoTemp;
+        Dijkstra Dijkstra;
+        NodoGrafo NodoTemp = null;
+        int Total = 0;
+        int i = 0;
+        Juan.recibe.goToStart();
+        Juan.llegada.goToStart();
+        while(i < Juan.recibe.size()){
+            GrafoTemp = Grafoaux(Juan.PosActual);
+            Dijkstra = new Dijkstra(GrafoTemp);
+            GrafoNuevo.Lista.goToStart();
+            int e = 0;
+            while(e < GrafoNuevo.Lista.size()){
+                NodoTemp = (NodoGrafo) GrafoNuevo.Lista.getElement();
+                Direcciones Dato = (Direcciones) NodoTemp.Dato;
+                if(Juan.recibe.getElement().equals(Dato.codigo)){
+                    e = GrafoNuevo.Lista.size();
+                }
+                GrafoNuevo.Lista.next();
+                e++;
+            }
+            NodosDijkstra ND1 = Dijkstra.BuscarNodo(Juan.PosActual);
+            NodosDijkstra ND2 = Dijkstra.BuscarNodo(NodoTemp);       
+            Dijkstra.rutamasCorta(ND1, ND2);
+            int y = 0;
+            Dijkstra.Camino.goToStart();
+            while(y <  Dijkstra.Camino.size()){
+                Juan.Camino.append(Dijkstra.Camino.getElement());
+                Juan.Camino.next();
+                y++;
+            }
+            
+            //**************************************************************************
+            
+            int p = 0;
+            NodoGrafo NGTemp = null;
+            GrafoNuevo.Lista.goToStart();
+            while(p < GrafoNuevo.Lista.size()){
+                NGTemp = (NodoGrafo) GrafoNuevo.Lista.getElement();
+                Direcciones DTemp = (Direcciones) NGTemp.Dato;
+                if(Juan.llegada.getElement().equals(DTemp.codigo)){
+                    p = GrafoNuevo.Lista.size();
+                }
+                GrafoNuevo.Lista.next();
+                p++;
+            }
+            GrafoTemp = Grafoaux((NodoGrafo) Juan.llegada.getElement());
+            Dijkstra Dijkstra2 = new Dijkstra(GrafoTemp);
+            NodosDijkstra ND3 = Dijkstra.BuscarNodo(NGTemp);       
+            Dijkstra.rutamasCorta(ND2, ND3);
+            y = 0;
+            Dijkstra.Camino.goToStart();
+            while(y <  Dijkstra.Camino.size()){
+                Juan.Camino.append(Dijkstra.Camino.getElement());
+                Juan.Camino.next();
+                y++;
+            }
+            Juan.llegada.next();
+            Juan.recibe.next();
+            i++;
+        }
+        System.out.println("Se hizo el metodo");
+        System.out.println(Total);
+        return Total;
+    }
+    
     private void CANCELARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELARActionPerformed
         // TODO add your handling code here:
         System.exit(0);
@@ -311,7 +398,7 @@ public class Configuracion extends javax.swing.JFrame {
         int i = Integer.valueOf(CantidadRepartidores.getText());
         int j=0;
         while(j<i){
-            Repartidor repart = new Repartidor(i);
+            Repartidor repart = new Repartidor(i, (NodoGrafo) GrafoNuevo.Lista.head.element);
             Admi.RepartidoresLista.addItem("Repartidor "+(j+1));
             Admi.Repartidores.append(repart);
             j++;
